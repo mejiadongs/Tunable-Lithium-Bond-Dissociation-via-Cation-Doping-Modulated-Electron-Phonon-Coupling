@@ -1,0 +1,9 @@
+-r requirements.txt
+
+# Optional machine-learning workflows
+# Note:
+# torch and dgl compatibility can depend on your Python version,
+# operating system, and CPU/GPU setup.
+torch
+dgl
+matgl

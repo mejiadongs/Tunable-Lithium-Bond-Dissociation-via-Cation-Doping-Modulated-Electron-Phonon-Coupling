@@ -1,0 +1,18 @@
+# Core scientific Python stack
+numpy
+scipy
+pandas
+matplotlib
+plotly
+h5py
+openpyxl
+PyYAML
+
+# Atomistic and materials workflows
+ase
+pymatgen
+phonopy
+
+# Notebook support
+jupyterlab
+ipykernel

@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it using the metadata below."
+title: "Engineering Electron-Phonon Coupling via Cation Doping"
+type: software
+authors:
+  - family-names: "mejiadongs"
+    email: "mejiadongs@gmail.com"
+abstract: >-
+  Scripts, notebooks, and workflow fragments for studying lithium bond
+  dissociation via cation doping, spanning DFT preparation, ML-assisted
+  optimization, electronic and phonon feature analysis, electrochemical
+  calculations, and RIXS/THz-TDS data processing.
+repository-code: "https://github.com/mejiadongs/Tunable-Lithium-Bond-Dissociation-via-Cation-Doping-Modulated-Electron-Phonon-Coupling"
+keywords:
+  - lithium bond dissociation
+  - cation doping
+  - electron-phonon coupling
+  - density functional theory
+  - phonon analysis
+  - materials informatics
+  - rixs
+  - thz-tds
