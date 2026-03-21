@@ -1,11 +1,9 @@
-# Tunable Lithium Bond Dissociation via Cation Doping Modulated Electron-Phonon Coupling
+# Engineering Electron-Phonon Coupling via Cation Doping
 
 This repository collects scripts, notebooks, and workflow fragments used to study lithium bond dissociation through cation doping, with a focus on coupled electronic, phonon, electrochemical, and spectroscopy analysis.
 
 ## Repository Structure
 
-- `structure_construction/`
-  Structure-building workspace for slab, surface, or model construction before downstream calculations.
 - `dft_parameters/`
   DFT model preparation and surface-building utilities for structural optimization and AIMD workflows.
 - `electrochemical_parameters_calculations/`
