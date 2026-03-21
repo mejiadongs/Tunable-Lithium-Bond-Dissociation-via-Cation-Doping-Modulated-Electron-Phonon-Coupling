@@ -1,1 +1,1 @@
-# Tunable-Lithium-Bond-Dissociation-via-Cation-Doping-Modulated-Electron-Phonon-Coupling
+# Engineering Electron–Phonon Coupling via Cation Doping for Tunable Lithium Bond Dissociation in Solid-State Batteries
