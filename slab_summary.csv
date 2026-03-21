@@ -1,0 +1,7 @@
+folder,poscar_path,total_atoms,chemical_formula,cell_volume,surface_area,vacuum_thickness
+.pytest_tmp/test_analyze_direct_structure_0/slab-a,.pytest_tmp/test_analyze_direct_structure_0/slab-a/POSCAR,2,Si2,120.000000,12.000000,8.000000
+.pytest_tmp/test_main_writes_csv_sorted_by0/large,.pytest_tmp/test_main_writes_csv_sorted_by0/large/POSCAR,3,H3,40.000000,4.000000,8.000000
+.pytest_tmp/test_main_writes_csv_sorted_by0/medium,.pytest_tmp/test_main_writes_csv_sorted_by0/medium/POSCAR,2,H2,40.000000,4.000000,8.000000
+.pytest_tmp/test_main_writes_csv_sorted_by0/small,.pytest_tmp/test_main_writes_csv_sorted_by0/small/POSCAR,1,H,40.000000,4.000000,10.000000
+.pytest_tmp/test_recursive_scan_ignores_ro0/group/sample,.pytest_tmp/test_recursive_scan_ignores_ro0/group/sample/POSCAR,3,Al2O,72.000000,6.000000,8.000000
+.pytest_tmp/test_recursive_scan_ignores_ro0,.pytest_tmp/test_recursive_scan_ignores_ro0/POSCAR,1,Ignored,729.000000,81.000000,9.000000
