@@ -8,6 +8,8 @@ This module groups modeling workflows for bond dissociation in both solid-phase 
   Solid-state model notebooks.
 - `liquid/`
   Adsorption, binding-energy, Gibbs free energy, and slab-freezing workflows for liquid-phase or interface studies.
+- `pmf_umbrella_sampling/`
+  MACE-assisted multi-window umbrella sampling and WHAM reconstruction workflow.
 
 ## Suggested Workflow
 
