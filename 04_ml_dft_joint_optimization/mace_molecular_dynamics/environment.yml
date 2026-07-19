@@ -1,0 +1,17 @@
+name: mace-workflow
+channels:
+  - conda-forge
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.11
+  - pip
+  - numpy
+  - scipy
+  - matplotlib
+  - ase
+  - phonopy
+  - pytorch=2.4
+  - pytorch-cuda=12.1
+  - pip:
+      - mace-torch

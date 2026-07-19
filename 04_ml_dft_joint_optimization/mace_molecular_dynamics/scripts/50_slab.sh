@@ -2,7 +2,8 @@
 # Optional slab MD and surface-projected VDOS workflow.
 # Run after validating the bulk workflow. Slab structures are expected in $BUNDLE.
 set -e
-source "$(dirname "$0")/config.sh"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/../config.sh"
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 [ -z "$MODEL" ] && { echo "MODEL is not set. Run 10_finetune.sh first."; exit 1; }
 
@@ -21,13 +22,13 @@ for slab in slab_HfO2 ; do
     echo "Skipping completed calculation: $slab"; continue
   fi
   echo "Running slab MD: $slab"
-  "$PY" "$BUNDLE/run_md.py" \
-    "$BUNDLE/$slab.vasp" "$SLAB_MODEL" "$MD_DIR/$slab" \
+  "$PY" "$SCRIPT_DIR/run_md.py" \
+    "$SLAB_STRUCTURE_DIR/$slab.vasp" "$SLAB_MODEL" "$MD_DIR/$slab" \
     --equil "$SLAB_EQUIL" --prod "$SLAB_PROD" --dt "$SLAB_DT" --T "$MD_T" \
     --friction "$SLAB_FRICTION" --tmax_factor 3.0 --dtype float32
-  "$PY" "$BUNDLE/vdos_surface.py" "$MD_DIR/$slab"
+  "$PY" "$SCRIPT_DIR/vdos_surface.py" "$MD_DIR/$slab"
 done
 
 echo "Generating surface VDOS plot."
-"$PY" "$BUNDLE/plot_slab_vdos.py"
+"$PY" "$SCRIPT_DIR/plot_slab_vdos.py"
 echo "Surface VDOS figure: $MD_DIR/fig_slab_vdos.png"

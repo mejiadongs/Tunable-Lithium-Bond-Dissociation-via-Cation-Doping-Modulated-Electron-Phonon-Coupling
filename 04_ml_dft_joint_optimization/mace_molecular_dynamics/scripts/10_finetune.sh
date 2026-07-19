@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 # Step 1: extract dataset from AIMD + fine-tune MACE-OMAT-0 on the GPU node.
 set -e
-source "$(dirname "$0")/config.sh"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/../config.sh"
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True   # reduce fragmentation OOM
 
 if [ -f "$DATA/train.xyz" ]; then
   echo "Using the existing training dataset."
 else
   echo "=== extracting training set from AIMD ==="
-  "$PY" "$BUNDLE/extract_dataset.py"
+  "$PY" "$SCRIPT_DIR/extract_dataset.py"
 fi
 
 echo "=== fine-tuning MACE-OMAT-0 (foundation=$FOUNDATION) ==="

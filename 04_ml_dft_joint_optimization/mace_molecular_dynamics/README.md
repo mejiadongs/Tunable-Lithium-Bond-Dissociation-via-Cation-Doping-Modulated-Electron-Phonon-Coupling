@@ -9,6 +9,8 @@ and generated results are not distributed.
 ## What runs where
 - **Fine-tuning + MD**: server GPU node (no scheduler, run directly, node has internet).
 - Copy `config.example.sh` to `config.sh`, then edit it for the local system.
+- Run all numbered workflow commands from `scripts/`; they automatically load
+  `../config.sh` and resolve their sibling Python scripts.
 
 ## 0. Put the bundle + point it at your data
 ```bash
@@ -20,14 +22,20 @@ Edit **`config.sh`** to point at local input data:
 - `RELAX_DIR`: directory containing the relaxed structures
 - `BUNDLE`: directory containing this workflow
 - `PY`: Python executable in the MACE environment
+- `SLAB_STRUCTURE_DIR` and `VACANCY_STRUCTURE_DIR`: local directories containing
+  the optional structural inputs, which are not distributed here
 
 ## 1. Environment (once)
 ```bash
-bash 00_setup_env.sh
-# then set PY in config.sh to the printed .../envs/mace_ft/bin/python
+conda env create -f environment.yml
+conda activate mace-workflow
+cp config.example.sh config.sh
 ```
-Match the CUDA wheel (`cu121`/`cu124`) in `00_setup_env.sh` to the node's driver
-(`nvidia-smi`). Nothing else needs the network after this.
+
+`environment.yml` targets a CUDA 12.1 Linux GPU environment. Adjust the PyTorch/CUDA
+entries for the available driver, or use `scripts/00_setup_env.sh` when cloning an
+existing server environment. Set `PY` in `config.sh` to the environment's Python
+executable before running the workflow.
 
 ## 2. Fine-tune  (`10_finetune.sh`)
 Extracts training configurations from AIMD and fine-tunes MACE-OMAT-0
@@ -72,12 +80,12 @@ Runs MD on a user-provided slab and computes surface-projected VDOS.
 | file | role |
 |---|---|
 | `config.example.sh` | template for paths and MD settings; copy to `config.sh` |
-| `00_setup_env.sh` | conda env + torch(CUDA) + mace-torch |
-| `extract_dataset.py` | AIMD trajectory to train/validation/test datasets |
-| `10_finetune.sh` | fine-tune MACE-OMAT-0 |
-| `vdos_dft_aimd.py` | DFT-AIMD reference VDOS (25 %) |
-| `run_md.py` | 300 K NVT-equil + NVE-production, saves velocities |
-| `vdos_from_md.py` | projected VDOS and low-frequency centroid/peak |
-| `20_validate.sh` + `compare_validation.py` | MACE-MD vs DFT-AIMD overlay |
-| `30_md_series.sh` | MD over the concentration series |
-| `40_plot.sh` + `plot_concentration_vdos.py` | reviewer figure |
+| `environment.yml` | Conda environment specification |
+| `scripts/00_setup_env.sh` | optional server environment setup |
+| `scripts/extract_dataset.py` | AIMD trajectory to train/validation/test datasets |
+| `scripts/10_finetune.sh` | fine-tune MACE-OMAT-0 |
+| `scripts/run_md.py` | 300 K NVT-equil + NVE-production, saves velocities |
+| `scripts/20_validate.sh` + `scripts/compare_validation.py` | MACE-MD versus DFT-AIMD overlay |
+| `scripts/30_md_series.sh` + `scripts/40_plot.sh` | concentration-series workflow and plot |
+| `scripts/50_slab.sh` | optional surface-projected VDOS workflow |
+| `scripts/60_vacancy.sh` + `scripts/61_vacancy_series.sh` | optional vacancy-analysis workflows |
