@@ -1,7 +1,7 @@
 """
 WHAM analysis to reconstruct PMF from umbrella sampling.
 
-Reads colvar_win_*.dat files produced by run_umbrella_mace.py,
+Reads colvar_win_*.dat files produced by 03_run_umbrella_mace.py,
 solves WHAM equations iteratively, outputs PMF.
 
 Usage:

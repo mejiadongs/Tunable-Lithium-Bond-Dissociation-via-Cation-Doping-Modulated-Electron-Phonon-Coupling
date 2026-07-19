@@ -7,16 +7,16 @@ PMF outputs are intentionally excluded.
 
 ## Workflow
 
-1. Run `scripts/extract_training_data_pmf.py` on a local directory containing the
+1. Run `scripts/01_extract_training_data.py` on a local directory containing the
    umbrella-sampling `OUTCAR` files. It discards the first 200 MD steps, samples every
    20th frame, and creates a deterministic 90/10 training/validation split.
-2. Run `scripts/finetune_mace.py` to fine-tune MACE-MP-0 on the generated datasets.
-3. Run `scripts/run_umbrella_mace.py` for each system, providing a trained model and
+2. Run `scripts/02_finetune_mace.py` to fine-tune MACE-MP-0 on the generated datasets.
+3. Run `scripts/03_run_umbrella_mace.py` for each system, providing a trained model and
    local `CONTCAR` and `ICONST` paths. The script uses a distance collective variable
    and writes one CV time series per window.
-4. Run `scripts/calc_pmf_wham.py` to discard the initial 20% of each window and solve
+4. Run `scripts/04_calc_pmf_wham.py` to discard the initial 20% of each window and solve
    the WHAM equations.
-5. Use `scripts/compare_pmf.py` to compare independently generated PMF profiles.
+5. Use `scripts/05_compare_pmf.py` to compare independently generated PMF profiles.
 
 ## Recorded production settings
 
@@ -33,5 +33,12 @@ PMF outputs are intentionally excluded.
 | WHAM equilibration removal | first 20% |
 
 The collective-variable atom indices and distance ranges are system-specific and are
-declared in `run_umbrella_mace.py`; verify them against the corresponding `ICONST`
+declared in `03_run_umbrella_mace.py`; verify them against the corresponding `ICONST`
 before running a new system.
+
+## MACE references
+
+The workflow fine-tunes the MACE-MP-0 foundation model. Cite the foundation-model
+paper, [A foundation model for atomistic materials chemistry](https://arxiv.org/abs/2401.00096),
+and the MACE architecture paper, [MACE: Higher Order Equivariant Message Passing
+Neural Networks for Fast and Accurate Force Fields](https://arxiv.org/abs/2206.07697).

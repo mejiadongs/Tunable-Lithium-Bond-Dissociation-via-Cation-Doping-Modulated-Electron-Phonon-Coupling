@@ -103,4 +103,4 @@ def fix_xyz_keys(path: Path):
 for p in [train_path, valid_path]:
     fix_xyz_keys(p)
 
-print("\nDone. Next: run finetune_mace.sh")
+print("\nDone. Next: run 02_finetune_mace.py")

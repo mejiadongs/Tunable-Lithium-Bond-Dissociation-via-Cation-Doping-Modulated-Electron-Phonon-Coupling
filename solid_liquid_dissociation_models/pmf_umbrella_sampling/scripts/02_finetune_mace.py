@@ -2,7 +2,7 @@
 Fine-tune MACE-MP-0 on PMF umbrella-sampling data.
 
 Usage:
-    python finetune_mace.py --train-file train.xyz --valid-file valid.xyz
+    python 02_finetune_mace.py --train-file train.xyz --valid-file valid.xyz
         --output-dir mace_pmf_run
 """
 
@@ -83,4 +83,4 @@ if proc.returncode != 0:
 print(f"\nTraining complete.")
 print(f"Final model : {MODEL_DIR / 'mace_pmf.model'}")
 print()
-print("Use the resulting model path with run_umbrella_mace.py.")
+print("Use the resulting model path with 03_run_umbrella_mace.py.")

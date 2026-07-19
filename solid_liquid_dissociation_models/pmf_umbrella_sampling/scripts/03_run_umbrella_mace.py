@@ -7,9 +7,9 @@ Workflow:
   3. Save CV time series -> colvar_<label>_win_<xi>.dat
 
 Usage:
-  python run_umbrella_mace.py --system Li2S --model mace_pmf.model
-  python run_umbrella_mace.py --system Li3N  --model mace_pmf.model
-  python run_umbrella_mace.py --system LiTFSI --model mace_pmf.model
+  python 03_run_umbrella_mace.py --system Li2S --model mace_pmf.model
+  python 03_run_umbrella_mace.py --system Li3N  --model mace_pmf.model
+  python 03_run_umbrella_mace.py --system LiTFSI --model mace_pmf.model
 
 Output: umbrella_mace/<system>/colvar_win_X.XX.dat
 """
@@ -255,4 +255,4 @@ for win_idx, xi0 in enumerate(xi_centers):
     print(f"  CV: mean={r_mean:.3f} std={r_std:.3f} Å  -> {colvar_path.name}")
 
 print(f"\nDone. {len(xi_centers)} windows finished.")
-print(f"Next: python calc_pmf_wham.py --system {args.system} --outdir {outdir}")
+print(f"Next: python 04_calc_pmf_wham.py --system {args.system}")
