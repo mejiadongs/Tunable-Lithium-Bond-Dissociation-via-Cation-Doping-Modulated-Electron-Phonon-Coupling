@@ -80,7 +80,7 @@ Citation metadata is provided in `CITATION.cff`. If you use this repository in r
 
 ## License
 
-An open-source license has not been selected yet. Until a `LICENSE` file is added, reuse permissions are not explicitly granted.
+This repository is released under the [MIT License](LICENSE).
 
 ## Notes
 
