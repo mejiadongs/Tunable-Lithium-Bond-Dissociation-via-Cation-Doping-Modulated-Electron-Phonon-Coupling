@@ -14,6 +14,7 @@ export MACE_NAME="mace_finetuned"
 [ -f "$WORK/model_path.txt" ] && export MODEL="$(cat "$WORK/model_path.txt")"
 
 export FOUNDATION="/path/to/mace-foundation.model"
+export SLAB_MODEL="/path/to/mace-surface.model"
 export MD_EQUIL=5000
 export MD_PROD=15000
 export MD_DT=1.0

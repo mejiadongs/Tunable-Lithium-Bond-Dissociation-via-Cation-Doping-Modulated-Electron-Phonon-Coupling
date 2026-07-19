@@ -1,5 +1,5 @@
 """
-Reference VDOS from the DFT-AIMD trajectories (XDATCAR), for the 25% cells.
+Reference VDOS from DFT-AIMD trajectories (XDATCAR) for validation cells.
 Used to validate the MACE-MD VDOS. Same velocity-power-spectrum method and the
 same 0-10 THz centroid / local-peak descriptor as vdos_from_md.py.
 Reads AIMD_DIR from env; writes vdos_dft_<system>.dat + a summary line.

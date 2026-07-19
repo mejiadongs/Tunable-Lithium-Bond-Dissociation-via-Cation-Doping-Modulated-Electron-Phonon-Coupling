@@ -1,5 +1,5 @@
 """
-Validation: overlay MACE-MD VDOS against DFT-AIMD VDOS for the 25% cells and
+Validation: overlay MACE-MD VDOS against DFT-AIMD VDOS for validation cells and
 report the centroid/peak agreement. If these match, the fine-tuned potential is
 trusted for the dilute concentration series.
 Reads:  $WORK/dft_vdos/vdos_dft_<sys>.dat   (from vdos_dft_aimd.py)

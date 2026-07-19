@@ -79,7 +79,7 @@ ax[1].set_xlabel("Cation doping fraction (%)")
 ax[1].set_ylabel("Low-freq. weight $W_{ac}$ (<4 THz)")
 ax[1].set_title("(b) Acoustic spectral weight vs concentration"); ax[1].legend(frameon=False)
 
-# (c) LOCAL (dopant + nearest-O) acoustic weight — the environment the Li bond couples
+# (c) Local dopant and nearest-neighbor oxygen acoustic weight.
 # to. The cell average in (b) is diluted by the undoped matrix and by the dopant mass
 # effect (Sc 45, Y 89 vs Hf 178.5 amu), so it is NOT the quantity of interest.
 LKEY = "W_acoustic_local_4"

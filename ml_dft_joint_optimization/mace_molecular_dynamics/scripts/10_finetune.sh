@@ -5,7 +5,7 @@ source "$(dirname "$0")/config.sh"
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True   # reduce fragmentation OOM
 
 if [ -f "$DATA/train.xyz" ]; then
-  echo "=== training set already extracted ($DATA/train.xyz) — skipping ==="
+  echo "Using the existing training dataset."
 else
   echo "=== extracting training set from AIMD ==="
   "$PY" "$BUNDLE/extract_dataset.py"
@@ -36,5 +36,4 @@ M="$(ls -1 "$TRAIN_DIR"/${MACE_NAME}*compiled*.model 2>/dev/null | head -1)"
 echo "$M" > "$WORK/model_path.txt"
 echo
 echo ">>> fine-tuned model: $M"
-echo ">>> (recorded in $WORK/model_path.txt; downstream scripts read it automatically)"
-echo ">>> check the test-set force RMSE printed above — it should be well under ~50 meV/A."
+echo "Model path recorded in $WORK/model_path.txt."

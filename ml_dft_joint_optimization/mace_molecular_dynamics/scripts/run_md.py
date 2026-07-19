@@ -40,12 +40,12 @@ p.add_argument("--friction", type=float, default=0.02,
                     "unstable slabs (e.g. 0.1).")
 p.add_argument("--prod_thermostat", action="store_true",
                help="keep a (weak) Langevin thermostat during production instead of "
-                    "NVE — use if NVE production of a slab still heats up.")
+                    "NVE - use if NVE production of a slab still heats up.")
 p.add_argument("--tmax_factor", type=float, default=3.0,
                help="per-step rescue: if T exceeds tmax_factor*T, reset velocities to "
                     "Maxwell-Boltzmann at T. Catches OOD force spikes before runaway.")
 p.add_argument("--dtype", choices=["float32", "float64"], default="float32",
-               help="MACE dtype; use float64 for the PMF surface potential.")
+               help="MACE dtype; use float64 for a surface-trained potential.")
 p.add_argument("--seed", type=int, default=1)
 p.add_argument("--min_len", type=float, default=0.0,
                help="replicate the cell so every lattice vector >= this length (A). "

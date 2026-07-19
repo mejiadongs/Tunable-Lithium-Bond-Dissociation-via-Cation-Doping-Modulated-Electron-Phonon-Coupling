@@ -16,10 +16,10 @@ and generated results are not distributed.
 scp -r mace_molecular_dynamics  you@server:~/project/
 ```
 Edit **`config.sh`** to point at local input data:
-- `AIMD_DIR`  → the dir containing `HfO2/ Sc-HfO2/ Y-HfO2` (each with `ToBeDelete_vasprun.xml` and `ToBeDelete_XDATCAR`)
-- `RELAX_DIR` → the dir containing `L_*_1Sc / L_*_1Y / L_*_pristine` (each with `CONTCAR`)
-- `BUNDLE`    → where you put this bundle
-- `PY`        → set after step 1 (the mace_ft python)
+- `AIMD_DIR`: directory containing the AIMD input trajectories
+- `RELAX_DIR`: directory containing the relaxed structures
+- `BUNDLE`: directory containing this workflow
+- `PY`: Python executable in the MACE environment
 
 ## 1. Environment (once)
 ```bash
@@ -35,7 +35,7 @@ Extracts training configurations from AIMD and fine-tunes MACE-OMAT-0
 for production dynamics.
 The model path is auto-recorded in `work/model_path.txt`.
 
-## 3. Validate  (`20_validate.sh`)  ← the decisive check
+## 3. Validate (`20_validate.sh`)
 Runs MACE-MD on validation cells and overlays the VDOS. Inspect
 `work/fig_validation_25pct.png`:
 - MACE-MD (red) should track DFT-AIMD (black), especially the **< 10 THz** shape;
@@ -51,7 +51,7 @@ corresponding block for additional dopants.
 ## 5. Plotting  (`40_plot.sh`)
 Produces `work/md/series/fig_concentration_vdos.png`:
 - (a) local (Sc + nearest-O) VDOS overlaid per concentration
-- (b) **0–10 THz VDOS centroid vs concentration** (the red-shift)
+- (b) **0-10 THz VDOS centroid versus concentration**
 - (c) local dominant peak position vs concentration
 
 ## 6. (Optional) Slab workflow  (`50_slab.sh`)
@@ -73,11 +73,11 @@ Runs MD on a user-provided slab and computes surface-projected VDOS.
 |---|---|
 | `config.example.sh` | template for paths and MD settings; copy to `config.sh` |
 | `00_setup_env.sh` | conda env + torch(CUDA) + mace-torch |
-| `extract_dataset.py` | AIMD vasprun → train/valid/test.xyz |
+| `extract_dataset.py` | AIMD trajectory to train/validation/test datasets |
 | `10_finetune.sh` | fine-tune MACE-OMAT-0 |
 | `vdos_dft_aimd.py` | DFT-AIMD reference VDOS (25 %) |
 | `run_md.py` | 300 K NVT-equil + NVE-production, saves velocities |
-| `vdos_from_md.py` | projected VDOS + 0–10 THz centroid/peak |
+| `vdos_from_md.py` | projected VDOS and low-frequency centroid/peak |
 | `20_validate.sh` + `compare_validation.py` | MACE-MD vs DFT-AIMD overlay |
 | `30_md_series.sh` | MD over the concentration series |
 | `40_plot.sh` + `plot_concentration_vdos.py` | reviewer figure |
