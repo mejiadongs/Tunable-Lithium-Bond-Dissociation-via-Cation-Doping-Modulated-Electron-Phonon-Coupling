@@ -12,7 +12,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-If you plan to run the machine-learning-assisted notebooks in `ml_dft_joint_optimization/`, install the optional ML stack as well:
+If you plan to run the machine-learning-assisted notebooks in `04_ml_dft_joint_optimization/`, install the optional ML stack as well:
 
 ```bash
 pip install -r requirements-ml.txt
@@ -37,26 +37,26 @@ Some scripts and notebooks also assume local databases, VASP outputs, or experim
 Example entry points:
 
 ```bash
-python rixs_thz_tds_data_processing/mrixs/mrixs_pipeline.py --help
-python electronic_phonon_structure_features/phonon/phonon/epc_viz.py --help
-python solid_liquid_dissociation_models/liquid/freeze_layers_from_db.py --help
+python 05_rixs_thz_tds_data_processing/mrixs/mrixs_pipeline.py --help
+python 03_electronic_phonon_structure_features/phonon/phonon/epc_viz.py --help
+python 06_solid_liquid_dissociation_models/liquid/freeze_layers_from_db.py --help
 ```
 
 Notebook-centered workflows can be opened directly in JupyterLab after the environment is installed.
 
 ## Repository Structure
 
-- `dft_parameters/`
+- `01_dft_parameters/`
   DFT model preparation and surface-building utilities for structural optimization and AIMD workflows.
-- `electrochemical_parameters_calculations/`
+- `02_electrochemical_parameters_calculations/`
   Electrochemical property calculations, including ionic conductivity fitting and transference number estimation.
-- `electronic_phonon_structure_features/`
+- `03_electronic_phonon_structure_features/`
   Electronic descriptors, phonon calculations, and phonon-scattering analysis workflows.
-- `ml_dft_joint_optimization/`
+- `04_ml_dft_joint_optimization/`
   Machine-learning-assisted DFT optimization notebooks, including doping-model exploration.
-- `rixs_thz_tds_data_processing/`
+- `05_rixs_thz_tds_data_processing/`
   Data-processing workflows for mRIXS and THz-TDS experiments.
-- `solid_liquid_dissociation_models/`
+- `06_solid_liquid_dissociation_models/`
   Modeling workflows for solid-phase and liquid-phase dissociation systems.
 
 Each module contains its own `README.md` with a more detailed description of its internal layout and main files.
