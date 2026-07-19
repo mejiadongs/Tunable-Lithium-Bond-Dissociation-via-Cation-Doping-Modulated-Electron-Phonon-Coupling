@@ -256,16 +256,3 @@ for win_idx, xi0 in enumerate(xi_centers):
 
 print(f"\nDone. {len(xi_centers)} windows finished.")
 print(f"Next: python calc_pmf_wham.py --system {args.system} --outdir {outdir}")
-
-
-
-
-
-
-
-
-
-
-
-
-
