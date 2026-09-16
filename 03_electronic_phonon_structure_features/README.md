@@ -2,6 +2,14 @@
 
 This module collects descriptor-generation and analysis workflows related to electronic structure, phonon behavior, and electron-phonon coupling.
 
+## Second-revision vibrational method
+
+For HfO2, finite-displacement phonons were calculated with phonopy using the
+fine-tuned MACE potentials and compared with direct DFT results at matched wavevectors.
+Element-projected spectra and molecular-dynamics VDOS were used to examine
+vibrational contributions and composition-dependent trends. These vibrational
+descriptors do not directly determine an electron-phonon coupling constant.
+
 ## Submodules
 
 - `electronic/`

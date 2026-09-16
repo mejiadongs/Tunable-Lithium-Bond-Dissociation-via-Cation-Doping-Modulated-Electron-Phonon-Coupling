@@ -9,6 +9,16 @@ This module stores machine-learning-assisted notebooks used alongside DFT workfl
 - `m3gnet.ipynb`
   Notebook related to M3GNet-based structure or property modeling.
 
+## Second-revision method
+
+For the HfO2 calculations, separate bulk and interface potentials were fine-tuned
+from MACE-OMAT-0 medium using DFT energies and forces. Three independently trained
+models formed a committee, with validation against held-out DFT configurations
+and representative interfacial Li-transfer configurations.
+
+The workflows below retain earlier examples; they do not constitute the complete
+second-revision production workflow.
+
 ## Reproducible MLIP Workflows
 
 - `mace_molecular_dynamics/`

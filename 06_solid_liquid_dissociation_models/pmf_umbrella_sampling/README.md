@@ -5,7 +5,18 @@ multi-window umbrella sampling with a MACE interatomic potential. Input structur
 DFT-AIMD trajectories, trained model weights, collective-variable time series, and
 PMF outputs are intentionally excluded.
 
-## Workflow
+## Second-revision method
+
+Li-N and Li-S dissociation at periodic HfO2-based solid-solid interfaces was sampled
+using the fine-tuned MACE-OMAT-0 interface committee. Distance-based umbrella
+sampling and WHAM yielded a PMF for each model, summarized by the committee mean
+and standard deviation. Mobile and harmonically tethered oxide atoms were compared
+to assess the influence of oxide motion.
+
+The scripts and settings below describe the earlier MACE-MP-0 example workflow,
+which is retained separately from this second-revision method.
+
+## Earlier example workflow
 
 1. Run `scripts/01_extract_training_data.py` on a local directory containing the
    umbrella-sampling `OUTCAR` files. It discards the first 200 MD steps, samples every
@@ -18,7 +29,7 @@ PMF outputs are intentionally excluded.
    the WHAM equations.
 5. Use `scripts/05_compare_pmf.py` to compare independently generated PMF profiles.
 
-## Recorded production settings
+## Earlier example settings
 
 | Setting | Value |
 | --- | --- |
@@ -36,7 +47,7 @@ The collective-variable atom indices and distance ranges are system-specific and
 declared in `03_run_umbrella_mace.py`; verify them against the corresponding `ICONST`
 before running a new system.
 
-## MACE references
+## Earlier example references
 
 The workflow fine-tunes the MACE-MP-0 foundation model. Cite the foundation-model
 paper, [A foundation model for atomistic materials chemistry](https://arxiv.org/abs/2401.00096),
