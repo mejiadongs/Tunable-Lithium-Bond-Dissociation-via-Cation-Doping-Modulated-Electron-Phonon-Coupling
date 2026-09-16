@@ -56,7 +56,7 @@ SPRING_K      = 5.0    # eV/Å²
 T             = 300.0  # K
 DT            = 0.5    # fs
 N_WARMUP      = 2000   # steps to equilibrate each window
-N_PROD        = 50000  # steps for production (= 50 ps)
+N_PROD        = 50000  # steps for production (= 25 ps at DT=0.5 fs)
 SAVE_EVERY    = 10     # record CV every N steps
 
 # ── Harmonic bias calculator ──────────────────────────────────────────────────
@@ -81,10 +81,12 @@ class HarmonicBias(Calculator):
         # Minimum image
         if atoms.get_pbc().any():
             from ase.geometry import find_mic
-            rij, _ = find_mic([rij], cell)
+            rij, _ = find_mic([rij], cell, pbc=atoms.get_pbc())
             rij = rij[0]
 
         r    = np.linalg.norm(rij)
+        if r < 1e-10:
+            raise ValueError("The reaction-coordinate atoms coincide.")
         rhat = rij / r
         energy  = 0.5 * self.k * (r - self.r0) ** 2
         f_mag   = -self.k * (r - self.r0)
@@ -110,7 +112,7 @@ def get_distance(atoms, i, j):
     rij  = pos[j] - pos[i]
     if atoms.get_pbc().any():
         from ase.geometry import find_mic
-        rij, _ = find_mic([rij], atoms.get_cell())
+        rij, _ = find_mic([rij], atoms.get_cell(), pbc=atoms.get_pbc())
         rij = rij[0]
     return float(np.linalg.norm(rij))
 
@@ -145,9 +147,13 @@ print(f"Windows : {len(xi_centers)}  ({cfg['xi_min']} → {cfg['xi_max']} Å, Δ
 print(f"Model   : {args.model}")
 print(f"Output  : {outdir}\n")
 
-# CV atom indices (hardcoded from ICONST, 0-based)
-i_cv = cfg["cv_i"]
-j_cv = cfg["cv_j"]
+# Prefer explicit ICONST, then the structure's sibling ICONST.
+iconst_path = Path(args.iconst) if args.iconst else Path(cfg["contcar"]).with_name("ICONST")
+if args.iconst or iconst_path.is_file():
+    i_cv, j_cv = read_iconst(iconst_path)
+else:
+    i_cv, j_cv = cfg["cv_i"], cfg["cv_j"]
+    print("No ICONST found: using legacy example indices; verify them for this structure.")
 print(f"CV atoms: {i_cv+1} – {j_cv+1} (1-based, VASP convention)\n")
 
 # Load MACE calculator once
@@ -159,6 +165,8 @@ mace_calc = MACECalculator(
 
 # Load initial structure and extract constraints (FixAtoms from F F F flags)
 atoms0 = read(str(cfg["contcar"]))
+if i_cv == j_cv or min(i_cv, j_cv) < 0 or max(i_cv, j_cv) >= len(atoms0):
+    raise ValueError("ICONST/CV indices must identify two distinct atoms in the input structure.")
 r_init = get_distance(atoms0, i_cv, j_cv)
 print(f"Initial CV distance: {r_init:.3f} Å")
 

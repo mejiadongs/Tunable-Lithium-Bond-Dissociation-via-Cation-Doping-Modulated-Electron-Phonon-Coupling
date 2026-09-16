@@ -13,8 +13,23 @@ sampling and WHAM yielded a PMF for each model, summarized by the committee mean
 and standard deviation. Mobile and harmonically tethered oxide atoms were compared
 to assess the influence of oxide motion.
 
-The scripts and settings below describe the earlier MACE-MP-0 example workflow,
-which is retained separately from this second-revision method.
+`scripts/revision2_pmf.py` is a compact implementation with general-cell periodic
+distances and per-model WHAM. Run from this directory (Python 3.10+, `mace-torch`,
+`ase`, `numpy`, and `scipy`):
+
+```bash
+python scripts/revision2_pmf.py sample --structure CONTCAR --models seed11.model seed23.model seed37.model --atoms 77 121 --start 1.5 --stop 4.2 --out pmf_free
+python scripts/revision2_pmf.py wham --inputs pmf_free/model_1 pmf_free/model_2 pmf_free/model_3 --out pmf.csv
+```
+
+Replace the example zero-based atom indices and range for your structure. Add
+`--oxide-k 20` and a new output directory for the tethered Hf/O/Sc/Y comparison.
+Sampling and WHAM must use the same `--k` and `--temperature`. Unsampled bins are
+NaN; disconnected windows fail explicitly. The output standard deviation is model
+spread, not a complete sampling-error estimate. These scripts are method examples;
+structures, DFT labels, and trained models are supplied separately.
+
+The numbered scripts and settings below retain the earlier MACE-MP-0 example.
 
 ## Earlier example workflow
 

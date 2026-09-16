@@ -14,6 +14,7 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+from revision2_pmf import solve_wham
 
 # ── Parameters ────────────────────────────────────────────────────────────────
 SPRING_K  = 5.0    # eV/Å²  (must match run_umbrella_mace.py)
@@ -64,55 +65,8 @@ for f in colvar_files:
 xi0_arr = np.array(xi0_list)
 N_win   = len(xi0_arr)
 
-# ── Build histogram bins ──────────────────────────────────────────────────────
-xi_all   = np.concatenate(cv_data)
-bin_edges = np.linspace(xi_all.min() - 0.01, xi_all.max() + 0.01, N_BINS + 1)
-bin_mids  = 0.5 * (bin_edges[:-1] + bin_edges[1:])
-
-# Count matrix:  H[win, bin]
-H = np.zeros((N_win, N_BINS))
-for w, cv in enumerate(cv_data):
-    H[w], _ = np.histogram(cv, bins=bin_edges)
-
-N_samples = np.array([len(cv) for cv in cv_data], dtype=float)
-
-# ── WHAM iterations ───────────────────────────────────────────────────────────
-# Bias energy for each window at each bin center
-def bias_energy(xi, xi0, k):
-    return 0.5 * k * (xi - xi0) ** 2
-
-U_bias = np.array([
-    [bias_energy(xi, xi0_arr[w], SPRING_K) for xi in bin_mids]
-    for w in range(N_win)
-])  # shape (N_win, N_bins)
-
-# Free energy offsets F[w], initialized to 0
-F = np.zeros(N_win)
-
-print(f"\nRunning WHAM ({WHAM_ITER} max iterations) ...", flush=True)
-for iteration in range(WHAM_ITER):
-    # Unbiased density
-    denom = (N_samples[:, None] * np.exp(BETA * (F[:, None] - U_bias))).sum(axis=0)
-    rho   = H.sum(axis=0) / (denom + 1e-300)
-
-    # Update F
-    F_new = -(1.0 / BETA) * np.log(
-        (rho[None, :] * np.exp(-BETA * U_bias)).sum(axis=1) + 1e-300
-    )
-    F_new -= F_new[0]   # fix gauge
-
-    delta = np.max(np.abs(F_new - F))
-    F     = F_new
-
-    if iteration % 500 == 0:
-        print(f"  iter {iteration:5d}  max_delta_F = {delta:.2e}")
-    if delta < WHAM_TOL:
-        print(f"  Converged at iteration {iteration}  (delta={delta:.2e})")
-        break
-
-# PMF (set minimum to 0)
-pmf = -(1.0 / BETA) * np.log(rho + 1e-300)
-pmf -= pmf.min()
+# Shared, numerically stable WHAM: reject disconnected windows; mask empty bins.
+bin_mids, pmf = solve_wham(cv_data, xi0_arr, SPRING_K, T, N_BINS)
 
 # ── Save PMF ──────────────────────────────────────────────────────────────────
 pmf_path = outdir / f"pmf_{args.system}.dat"
@@ -139,8 +93,8 @@ ax.set_title(f"{args.system}: Window histograms")
 
 # Right: PMF
 ax = axes[1]
-mask = np.isfinite(pmf) & (pmf < 5.0)   # exclude poorly sampled tails
-ax.plot(bin_mids[mask], pmf[mask], "b-", lw=2)
+mask = np.isfinite(pmf)
+ax.plot(bin_mids, pmf, "b-", lw=2)  # NaNs preserve gaps in sampled support.
 ax.set_xlabel("CV (Å)")
 ax.set_ylabel("PMF (eV)")
 ax.set_title(f"{args.system}: PMF  (T={T} K)")
@@ -152,6 +106,6 @@ fig.savefig(fig_path, dpi=150, bbox_inches="tight")
 print(f"Plot saved: {fig_path}")
 
 barrier = pmf[mask].max()
-print(f"\nFree energy barrier: {barrier:.3f} eV  ({barrier*96.485:.1f} kJ/mol)")
+print(f"\nSampled PMF range: {barrier:.3f} eV  ({barrier*96.485:.1f} kJ/mol)")
 
 plt.show()

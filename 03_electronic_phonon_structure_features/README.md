@@ -10,6 +10,17 @@ Element-projected spectra and molecular-dynamics VDOS were used to examine
 vibrational contributions and composition-dependent trends. These vibrational
 descriptors do not directly determine an electron-phonon coupling constant.
 
+Minimal MACE–DFT comparison (run from this module with `mace-torch`, `phonopy`,
+`ase`, `numpy`, and `PyYAML` installed):
+
+```bash
+python phonon/mace_phonon_validate.py --structure POSCAR --dft-band band.yaml --models seed11.model seed23.model seed37.model --out phonon_check
+```
+
+Use an already relaxed primitive cell with the same lattice/basis as the DFT
+reference. Frequencies are sorted at each q point for comparison; no branch
+tracking or non-analytical correction is applied.
+
 ## Submodules
 
 - `electronic/`

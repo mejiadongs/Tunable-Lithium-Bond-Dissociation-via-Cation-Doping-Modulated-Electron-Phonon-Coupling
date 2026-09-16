@@ -16,8 +16,20 @@ from MACE-OMAT-0 medium using DFT energies and forces. Three independently train
 models formed a committee, with validation against held-out DFT configurations
 and representative interfacial Li-transfer configurations.
 
-The workflows below retain earlier examples; they do not constitute the complete
-second-revision production workflow.
+`train_mace_committee.py` provides a minimal three-seed launcher. Supply a local
+MACE-OMAT-0 medium checkpoint and separate bulk or interface datasets containing
+`REF_energy` and `REF_forces` (with `config_type` labels for interface weighting):
+
+```bash
+python train_mace_committee.py --kind bulk --foundation foundation.model --train train.extxyz --valid valid.extxyz --test test.extxyz --out bulk_models
+```
+
+Run separately with `--kind interface` for the interface potential. Use Python 3.10+
+with `mace-torch` (training options follow v0.3.16); `--dry-run` prints commands.
+The local checkpoint must match `--dtype` (default `float64`); use `--dtype float32`
+with a checkpoint already converted to float32.
+Inputs must already have independent training/validation/test splits. These are
+compact method examples, not the complete production data-preparation workflow.
 
 ## Reproducible MLIP Workflows
 

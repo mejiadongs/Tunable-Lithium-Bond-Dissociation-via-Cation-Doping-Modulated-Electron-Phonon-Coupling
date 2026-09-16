@@ -11,6 +11,7 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+from revision2_pmf import solve_wham
 
 # ── WHAM parameters (must match run_umbrella_mace.py) ────────────────────────
 SPRING_K  = 5.0
@@ -38,33 +39,7 @@ def run_wham(indir: Path, label: str):
         cv_data.append(cv)
 
     xi0_arr = np.array(xi0_list)
-    N_win   = len(xi0_arr)
-    xi_all  = np.concatenate(cv_data)
-    bin_edges = np.linspace(xi_all.min() - 0.01, xi_all.max() + 0.01, N_BINS + 1)
-    bin_mids  = 0.5 * (bin_edges[:-1] + bin_edges[1:])
-
-    H = np.zeros((N_win, N_BINS))
-    for w, cv in enumerate(cv_data):
-        H[w], _ = np.histogram(cv, bins=bin_edges)
-    N_samples = np.array([len(cv) for cv in cv_data], dtype=float)
-
-    U_bias = 0.5 * SPRING_K * (bin_mids[None, :] - xi0_arr[:, None]) ** 2
-    F = np.zeros(N_win)
-
-    for it in range(WHAM_ITER):
-        denom = (N_samples[:, None] * np.exp(BETA * (F[:, None] - U_bias))).sum(axis=0)
-        rho   = H.sum(axis=0) / (denom + 1e-300)
-        F_new = -(1.0 / BETA) * np.log(
-            (rho[None, :] * np.exp(-BETA * U_bias)).sum(axis=1) + 1e-300)
-        F_new -= F_new[0]
-        delta  = np.max(np.abs(F_new - F))
-        F      = F_new
-        if delta < WHAM_TOL:
-            print(f"  WHAM converged at iter {it} (delta={delta:.2e})")
-            break
-
-    pmf = -(1.0 / BETA) * np.log(rho + 1e-300)
-    pmf -= pmf.min()
+    bin_mids, pmf = solve_wham(cv_data, xi0_arr, SPRING_K, T, N_BINS)
 
     # Save dat file
     out_dat = indir / f"pmf_{indir.name}.dat"
@@ -116,8 +91,7 @@ ax.legend(fontsize=11)
 # Right: PMF comparison
 ax = axes[1]
 for (lbl, xi, pmf, cv_data, xi0_list), color in zip(results, COLORS):
-    mask = np.isfinite(pmf) & (pmf < 5.0)
-    ax.plot(xi[mask], pmf[mask], lw=2.5, color=color, label=lbl)
+    ax.plot(xi, pmf, lw=2.5, color=color, label=lbl)
 ax.axhline(0, color="gray", ls="--", lw=0.8)
 ax.set_xlabel("CV (Å)", fontsize=13)
 ax.set_ylabel("PMF (eV)", fontsize=13)
